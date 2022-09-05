@@ -44,6 +44,5 @@ int main(){
 	listar(vetor, TAM); 
 	insertionSort(vetor, TAM); 
 	listar(vetor, TAM); 
-	//printf("\n\nTrocas %ld\nPassos %ld\n\n",trocas,passos);
 	return 0;
 }
