@@ -4,10 +4,43 @@
 typedef struct TLista{
 	struct TLista *next;
 	struct TLista *prev;
+	struct TLista *fim;
+	int pivo;
 	int info;
 }TLista; 
 
 typedef TLista * Lista;
+
+TLista * partition(Lista *LISTA, TLista * inicio, TLista * fim){
+    TLista *lista, *pivo; 
+    pivo = lista->fim;
+    TLista *atual, *temp;
+    TLista * menores = inicio - 1;
+	for (atual = inicio; atual < fim; atual++){
+		if (atual->info < pivo->info){
+			menores++;
+			temp->info = atual->info;
+			atual->info = menores->info;
+			menores->info = temp->info;
+		}
+	}
+    TLista *meio = menores - 1;
+	temp = pivo;
+	pivo = meio;
+	meio = temp;
+	return meio;
+}
+
+void quickSort(Lista *LISTA, TLista * inicio, TLista * fim){
+	if (inicio >= fim){
+		return;
+    }
+	
+	TLista * meio = partition(LISTA,inicio,fim);
+	quickSort(LISTA,inicio, meio - 1);
+	quickSort(LISTA, meio + 1, fim);
+}
+
 
 int vazia(Lista *LISTA){
 	if(*LISTA == 0)
@@ -43,35 +76,8 @@ void enqueueFim(Lista *LISTA, int leitura){
         last->next = *LISTA;
         last->info = leitura;
         (*LISTA)->prev = last;
-	}
-}
 
-void insertionSort(Lista *LISTA){
-    TLista *lista, *tmp1, *tmp2, *troca, *troca_prev, *troca_next;
-    lista = *LISTA;
-    lista = lista->next;
-    while(lista!=*LISTA){
-        tmp1=lista;
-        tmp2=lista->prev;
-        lista=lista->next;
-        while (tmp2->next != *LISTA && tmp2->info > tmp1->info){
-            troca_prev = tmp2->prev;
-            troca_next = tmp1->next;
-            troca_prev->next = tmp1;
-            tmp1->next = tmp2;
-            tmp2->next = troca_next;
-            troca_next->prev = tmp2;
-            tmp2->prev = tmp1;
-            tmp1->prev = troca_prev;
-            tmp2 = tmp1;
-            tmp1 = tmp2->next;
-            if(tmp1==*LISTA){
-                *LISTA = tmp2;
-            }
-            tmp2=tmp2->prev;
-            tmp1 = tmp1->prev;
-        }
-    }
+	}
 }
 
 void listar(Lista *LISTA){
@@ -115,7 +121,7 @@ int main(void){
         printf("\n================================================================================\n");
         printf("\nANTES:\t\t");
 		listar(LISTA);
-		insertionSort(LISTA);
+		quickSort(LISTA, 0, (*LISTA)->fim); 
         printf("\nDEPOIS:\t\t");
 		listar(LISTA);
         printf("\n===============================================================================\n\n");

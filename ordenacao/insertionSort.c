@@ -3,20 +3,6 @@
 
 int vetor[TAM] = {5,4,3,2,1};
 
-void insertionSortAlunos(int v[],int tamanho){
-	int i,j,temp;
-	for (i =1; i < TAM; i++){
-		temp = v[i];
-		for (j = i - 1; j >= 0; j--){
-			if (v[j] > temp){
-				v[j+1] = v[j];
-			}else	
-				break;
-		}
-		v[j + 1] = temp;
-	}
-}
-
 void insertionSort(int v[],int tamanho){
 	int i,j,temp;
 	for (i = 1; i < TAM; i++){
