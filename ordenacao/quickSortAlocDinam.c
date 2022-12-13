@@ -1,130 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct TLista{
-	struct TLista *next;
-	struct TLista *prev;
-	struct TLista *fim;
-	int pivo;
-	int info;
-}TLista; 
+struct LISTA{
+    int info;
+    struct LISTA *next;
+    struct LISTA *prev;
+};
 
-typedef TLista * Lista;
-
-TLista * partition(Lista *LISTA, TLista * inicio, TLista * fim){
-    TLista *lista, *pivo; 
-    pivo = lista->fim;
-    TLista *atual, *temp;
-    TLista * menores = inicio - 1;
-	for (atual = inicio; atual < fim; atual++){
-		if (atual->info < pivo->info){
-			menores++;
-			temp->info = atual->info;
-			atual->info = menores->info;
-			menores->info = temp->info;
-		}
-	}
-    TLista *meio = menores - 1;
-	temp = pivo;
-	pivo = meio;
-	meio = temp;
-	return meio;
+void swap (int *a, int *b ){
+	int t = *a; 
+    *a = *b; 
+    *b = t;
 }
 
-void quickSort(Lista *LISTA, TLista * inicio, TLista * fim){
-	if (inicio >= fim){
-		return;
-    }
-	
-	TLista * meio = partition(LISTA,inicio,fim);
-	quickSort(LISTA,inicio, meio - 1);
-	quickSort(LISTA, meio + 1, fim);
+struct LISTA *lastLISTA(struct LISTA *last){
+    while (last && last->next)
+    last = last->next;
+    return last;
 }
-
-
-int vazia(Lista *LISTA){
-	if(*LISTA == 0)
-		return 1;
-	else
-	return 0;
-}
-
-TLista *aloca(Lista *LISTA){
-	(*LISTA) = malloc(sizeof(TLista));
-    return (*LISTA);
-}
-
-TLista *inicia(Lista *LISTA, int leitura){
-    (*LISTA)->prev = *LISTA;
-    (*LISTA)->next = *LISTA;
-    (*LISTA)->info = leitura;
-}
-
-void enqueueFim(Lista *LISTA, int leitura){
- 	if(vazia(LISTA)){
-        aloca(LISTA);
-        inicia(LISTA, leitura);
- 	}else{
-        TLista * tmp, *last;
-		tmp = *LISTA;
-	  	while(tmp->next != *LISTA){
-			tmp = tmp->next;
+ 
+struct LISTA* partition(struct LISTA *l, struct LISTA *h){
+    int x = h->info;
+    struct LISTA *i = l->prev;
+    struct LISTA *j;
+    for (j = l; j != h; j = j->next){
+        if (j->info <= x){
+            i = (i == NULL) ? l : i->next;
+            swap(&(i->info), &(j->info));
         }
-        tmp->next = malloc(sizeof(TLista));
-        last = tmp->next;
-        last->prev = tmp;
-        last->next = *LISTA;
-        last->info = leitura;
-        (*LISTA)->prev = last;
-
-	}
+    }
+    i = (i == NULL) ? l : i->next; 
+    swap(&(i->info), &(h->info));
+    return i;
+}
+ 
+void quickSort(struct LISTA *head, struct LISTA *list){
+    if (list != NULL && head != list && head != list->next){
+        struct LISTA *p = partition(head, list);
+        quickSort(head, p->prev);
+        quickSort(p->next, list);
+    }
+}
+ 
+void printList(struct LISTA *head){
+    while (head){
+        printf("%d ", head->info);
+        head = head->next;
+    }
+    printf("\n");
 }
 
-void listar(Lista *LISTA){
- 	//system("clear");
- 	if(vazia(LISTA)){
-  		printf("Lista vazia!\n\n");
-  		return;
- 	}
-	TLista *tmp;
-	tmp = *LISTA;
-
-	//printf("Lista:\n");
-    
-    do{
-  		//printf("[%5d] = %d \n", tmp, tmp->info);
-  		printf("%d \t", tmp->info);
-        tmp = tmp->next;
- 	} while(tmp != *LISTA);
-
- 	printf("\n");
+void push(struct LISTA** head_ref, int new_info){
+    struct LISTA* new_LISTA = (struct LISTA*)
+    malloc(sizeof(struct LISTA));
+    new_LISTA->info = new_info;
+    new_LISTA->prev = NULL;
+    new_LISTA->next = (*head_ref);
+    if ((*head_ref) != NULL) (*head_ref)->prev = new_LISTA ;
+    (*head_ref) = new_LISTA;
 }
 
 int main(void){
-    Lista *LISTA;
-    Lista p=NULL;
-    LISTA = &p;
-	int leitura;
+    struct LISTA *a = NULL;
+	int info;
+	
+	while(1){
+		printf("Informe o valor: ");
+		scanf("%d", &info);
+		if (info == 0){
+			break;
+		}
+		push(&a, info);
+	}
 
- 	if(!LISTA){
-  		printf("Sem memoria disponivel!\n");
-  		exit(1);
- 	}else{
-        while(1){
-		    printf("Informe o valor: ");
-		    scanf("%d",&leitura);
-		    if (leitura == 0){
-			    break;
-            }
-    	    enqueueFim(LISTA, leitura);
-	    }
-        printf("\n================================================================================\n");
-        printf("\nANTES:\t\t");
-		listar(LISTA);
-		quickSort(LISTA, 0, (*LISTA)->fim); 
-        printf("\nDEPOIS:\t\t");
-		listar(LISTA);
-        printf("\n===============================================================================\n\n");
-	 	return 0;
- 	}
+	printf("\n=======================================================\n");
+	printf("\nANTES:\t\t");
+	printList(a);
+    struct LISTA *h = lastLISTA(a);
+	quickSort(a, h); 
+	printf("\nDEPOIS:\t\t");
+	printList(a);
+	printf("\n======================================================\n\n");
+    return 0;
 }
