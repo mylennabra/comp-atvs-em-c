@@ -2,6 +2,8 @@
 
 ## :heavy_check_mark: Bubble Sort
 
+![Bubble ‐ Feito com o Clipchamp](https://user-images.githubusercontent.com/74362841/217576873-248b72ad-8a5d-4443-a30f-483c6e56ad4d.gif)
+
 - ##### Alocação Estática
 - ##### Alocação Dinâmica
 
