@@ -1,32 +1,76 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-// Ordenação de números com alocação dinâmica
+typedef struct TLista{
+	struct TLista *next;
+	int info;
+}TLista;
 
-int main() {
-   	int *p;
-   	int qt, n, i, j, aux;
+typedef TLista * Lista;
+struct TLista *lista, *LISTA = NULL, *temp;
 
-	printf("Quantos numeros deseja ordenar? ");
-	scanf("%d", &n);
-	p = (int*)calloc(n, sizeof(int));
 
-	for (i = 0; i < n; i++) {
-		printf("%dº - ", i+1);
-		scanf("%d", (p+i));
+void enqueueFim(int leitura){
+	lista = (struct TLista*)malloc(sizeof(struct TLista));
+	lista->info = leitura;
+	lista->next = NULL;
+	if (LISTA == NULL){
+		LISTA = lista;
+	}else{
+		temp = LISTA;
+		while(temp->next != NULL) {
+			temp = temp->next;
+		}
+		temp->next = lista;
 	}
+}
 
-	for (i = 0; i < n-1; i++) {
-		for (j = i+1; j < n; j++) {
-			if (p[i] > p[j]) {
-			   aux = p[i];
-			   p[i] = p[j];
-			   p[j] = aux;
-			}
-		} 
-	} 
+void display()
+{
+    if(LISTA == NULL){
+        printf("Lista vazia!\n\n");
+  		return;
+    }else{
+        temp = LISTA;
+        while(temp != NULL){
+            printf("%d \t", temp->info);
+            temp = temp->next;
+        }
+    }
+}
 
-	for (i = 0; i < n; i++) {
-		printf("%d ", p[i]);
-	}   	
+void sort(){
+    struct TLista *i, *j;
+    int num;
+    for(i= LISTA; i->next != NULL; i=i->next){
+        for(j=i->next ; j!= NULL; j=j->next){
+            if(i->info > j->info){
+                num = j->info;
+                j->info = i->info;
+                i->info = num;
+            }
+        }
+    }
+}
+
+int main(){
+	Lista *LISTA;
+	int leitura;
+
+	while(1){
+		printf("Informe o valor: ");
+		scanf("%d",&leitura);
+		if (leitura == 0){
+			break;
+		}
+		enqueueFim(leitura);
+	}
+	printf("\n================================================================================\n");
+	printf("\nANTES:\t\t");
+    display();
+    sort();
+	printf("\nDEPOIS:\t\t");
+    display();
+	printf("\n\n===============================================================================\n\n");
+    return 0;
 }

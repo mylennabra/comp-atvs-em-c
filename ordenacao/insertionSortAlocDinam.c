@@ -48,7 +48,6 @@ void enqueueFim(Lista *LISTA, int leitura){
 
 void insertionSort(Lista *LISTA){
     TLista *lista, *tmp1, *tmp2, *troca, *troca_prev, *troca_next;
-    lista = *LISTA;
     lista = lista->next;
     while(lista!=*LISTA){
         tmp1=lista;
@@ -75,18 +74,14 @@ void insertionSort(Lista *LISTA){
 }
 
 void listar(Lista *LISTA){
- 	//system("clear");
  	if(vazia(LISTA)){
   		printf("Lista vazia!\n\n");
   		return;
  	}
 	TLista *tmp;
 	tmp = *LISTA;
-
-	//printf("Lista:\n");
     
     do{
-  		//printf("[%5d] = %d \n", tmp, tmp->info);
   		printf("%d \t", tmp->info);
         tmp = tmp->next;
  	} while(tmp != *LISTA);
