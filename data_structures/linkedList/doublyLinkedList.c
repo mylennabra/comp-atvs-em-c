@@ -61,7 +61,7 @@ void insertAfter(int data, int position) {
     new_node->prev = temp;
 }
 
-void delete_at_head() {
+void deleteStart() {
     if (head == NULL) {
         return;
     }
@@ -76,7 +76,7 @@ void delete_at_head() {
     free(temp);
 }
 
-void delete_at_tail() {
+void deleteEnd() {
     if (tail == NULL) {
         return;
     }
@@ -91,31 +91,45 @@ void delete_at_tail() {
     free(temp);
 }
 
-void delete_at_position(int position) {
+void deleteAfter(int position) {
     if (head == NULL) {
         return;
     }
     if (position == 1) {
-        delete_at_head();
+        deleteStart();
         return;
     }
+    node *temp = head;
+    int i;
+    for (i = 1; i < position && temp->next != NULL; i++) {
+        temp = temp->next;
+    }
+    if (temp->next == NULL) {
+        deleteEnd();
+        return;
+    }
+    temp->prev->next = temp->next;
+    temp->next->prev = temp->prev;
+    free(temp);
 }
+
 
 void printList() {
     struct node *temp = head;
+    printf("\nListando\n");
     while (temp != NULL) {
         printf("%d ", temp->data);
         temp = temp->next;
     }
-    printf("\n");
+    printf("\n\n");
 }
 
 int main() {
   struct Node* head = NULL;
   int menu_ans, answer, position;
   system("cls");
-  while(menu_ans!=5){
-    printf("MENU\n- 1. Adicionar no inicio\n- 2. Adicionar ao fim\n- 3. Escolher onde adicionar\n- 4. Ver lista\n- 5. Sair\nResposta: ");
+  while(menu_ans!=8){
+    printf("MENU\n- 1. Adicionar no inicio\n- 2. Adicionar ao fim\n- 3. Escolher onde adicionar\n- 4. Apagar o primeiro\n- 5. Apagar o ultimo\n- 6. Escolher onde apagar\n- 7. Ver lista\n- 8. Sair\nResposta: ");
     scanf("%d", &menu_ans);
     switch (menu_ans){
         case 1:
@@ -131,7 +145,7 @@ int main() {
             system("cls");
         break;
         case 3: 
-            printList(head);
+            printList();
             printf("Em qual posicao deseja adicionar? ");
             scanf("%d", &position);
             printf("Qual numero deseja adicionar? ");
@@ -140,10 +154,26 @@ int main() {
             system("cls");
         break;
         case 4: 
+            deleteStart(answer);
+            system("cls");
+        break;
+        case 5: 
+            deleteEnd();
+            system("cls");
+        break;
+        case 6: 
+            system("cls");
+            printList();
+            printf("Qual a posicao deseja excluir? ");
+            scanf("%d", &answer);
+            deleteAfter(answer);
+            system("cls");
+        break;
+        case 7: 
             system("cls");
             printList();
         break;
-        case 5: 
+        case 8: 
         return 0;
         break;
     }
